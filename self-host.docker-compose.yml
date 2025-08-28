@@ -15,8 +15,9 @@ services:
   app:
     image: ghcr.io/agnaistic/agnaistic:latest
     restart: always
-    ports:
-      - '3001:3001'
+    build:
+      context: .
+    hostname: app
     environment:
       - DB_HOST=mongo
       - DB_PORT=27017
@@ -38,5 +39,11 @@ services:
     volumes:
       - dbdata:/data/db
       - dbconfig:/data/configdb
+    networks:
+      - backend
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    command: tunnel --no-autoupdate run --token eyJhIjoiMzJlZDRjY2E4MWJmYzRlZWZjNGY1NWE0N2RlYjRjMDMiLCJ0IjoiNzc5ZjRjZDUtNDE1Zi00NjFlLWJlOTAtNmQxM2FlZDk4MzNmIiwicyI6Ik5tRXdaalptTUdZdFpHVmtOUzAwTURoaExXSXlPRGt0WldZNE1tSXlZamMwTlRCaiJ9
     networks:
       - backend

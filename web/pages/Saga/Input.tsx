@@ -37,8 +37,9 @@ export const SagaInput: Component<{
         disabled={props.loading}
         onKeyDown={(ev) => {
           const isMobileDevice = /Mobi/i.test(window.navigator.userAgent)
-          const canMobileSend = isMobileDevice ? user.ui.mobileSendOnEnter : true
-          if (ev.key === 'Enter' && !ev.shiftKey && canMobileSend) {
+          const canMobileSend = isMobileDevice ? user.ui.mobileSendOnEnter : false
+          // Send on Shift+Enter, Ctrl+Enter, Cmd+Enter; on mobile optionally allow Enter
+          if (ev.key === 'Enter' && (ev.shiftKey || ev.ctrlKey || ev.metaKey || canMobileSend)) {
             props.onEnter(ref.value, success)
             ev.preventDefault()
           }

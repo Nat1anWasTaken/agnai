@@ -369,8 +369,9 @@ const InputBar: Component<{
               setComplete(true)
             }
 
-            const canMobileSend = mob() ? user.ui.mobileSendOnEnter : true
-            if (ev.key === 'Enter' && !ev.shiftKey && canMobileSend) {
+            const canMobileSend = mob() ? user.ui.mobileSendOnEnter : false
+            // Send on Shift+Enter, Ctrl+Enter, Cmd+Enter; on mobile optionally allow Enter
+            if (ev.key === 'Enter' && (ev.shiftKey || ev.ctrlKey || ev.metaKey || canMobileSend)) {
               if (complete()) return
               send()
               ev.preventDefault()
